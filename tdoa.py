@@ -34,10 +34,12 @@ for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa ko
      #print(position.x, position.y, position.z, final_error)
      #print("error for x, y and z axis:", abs(rec2.x - position.x)*1000, "cm", abs(rec2.y - position.y)*1000, "cm", abs(rec2.z - position.z)*1000, "cm")
 
-data = {'errors':errors, 'x estimated':x_arr, 'y estimated':y_arr, 'z estimated':z_arr, 'execution time':time_arr}
-df = pd.DataFrame(data)
+#data = {'errors':errors, 'x estimated':x_arr, 'y estimated':y_arr, 'z estimated':z_arr, 'execution time':time_arr}
+#df = pd.DataFrame(data)
 
-df.to_excel(dst_address, index=False)
+#df.to_excel(dst_address, index=False)
 
-print(df.describe())
-print("error mean = ", mean(errors))
+#print(df.describe())
+#print("error mean = ", mean(errors))
+
+print("DONE!")
