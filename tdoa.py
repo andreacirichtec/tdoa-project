@@ -21,7 +21,7 @@ for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa ko
      estimated_position = Point(rec2.x, rec2.y, rec2.z)
      
      time1 = time.time()
-     position, final_error = gradient_descent_f(constellation3, rec0, rec1, rec2, estimated_position)
+     position, final_error = gradient_descent_f(constellation1, rec0, rec1, rec2, estimated_position)
      time2 = time.time()
 
      time_arr.append(time2-time1)

@@ -1,5 +1,5 @@
 import math
-from data.constellations import *
+from constellations import *
 
 def error_f(constellation, rec0, rec1, rec2, estimated_position):
     

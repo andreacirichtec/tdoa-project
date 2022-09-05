@@ -1,8 +1,14 @@
+from error_function import error_f
+
 class Point:
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
         self.z = z
+
+    def error(constellation, rec0, rec1, rec2):
+        err = error_f(constellation, rec0, rec1, rec2, self)
+        return err
 
 class Recording:
   def __init__(self, idA, idB, dt, x, y, z):
