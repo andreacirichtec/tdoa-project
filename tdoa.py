@@ -5,6 +5,8 @@ from data.constellations import *
 from gradient_descent import gradient_descent_f
 from statistics import mean
 
+from nelder_mead import nelder_mead_f
+
 # change these addresses and file names
 src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-extracted.xlsx"
 dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-results.xlsx"
@@ -20,15 +22,17 @@ for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa ko
 
      estimated_position = Point(rec2.x, rec2.y, rec2.z)
      
-     time1 = time.time()
-     position, final_error = gradient_descent_f(constellation1, rec0, rec1, rec2, estimated_position)
-     time2 = time.time()
+     # time1 = time.time()
+     # position, final_error = gradient_descent_f(constellation1, rec0, rec1, rec2, estimated_position)
+     # time2 = time.time()
 
-     time_arr.append(time2-time1)
-     errors.append(final_error)
-     x_arr.append(position.x)
-     y_arr.append(position.y)
-     z_arr.append(position.z)
+     # time_arr.append(time2-time1)
+     # errors.append(final_error)
+     # x_arr.append(position.x)
+     # y_arr.append(position.y)
+     # z_arr.append(position.z)
+
+     nelder_mead_f(constellation1, rec0, rec1, rec2, estimated_position)
      
      print(i)
      #print(position.x, position.y, position.z, final_error)

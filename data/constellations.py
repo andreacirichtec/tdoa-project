@@ -1,4 +1,5 @@
-from error_function import error_f
+import math
+#from constellations import *
 
 class Point:
     def __init__(self, x, y, z):
@@ -6,7 +7,10 @@ class Point:
         self.y = y
         self.z = z
 
-    def error(constellation, rec0, rec1, rec2):
+    def __str__(self):
+        return f"({self.x},{self.y},{self.y})"
+
+    def error(self, constellation, rec0, rec1, rec2):
         err = error_f(constellation, rec0, rec1, rec2, self)
         return err
 
@@ -51,3 +55,19 @@ constellation4 = [Point(-3.0101983925222484,-4.058910586060332,0.196289711815028
                     Point(3.953882519480277,-3.7624630950139464,0.20347693202729109),
                     Point(3.4654089074024688,3.55896956542648,2.9710608167433157),
                     Point(-3.2112336178645373,3.304121110232922,0.17617659290117677)]
+
+def error_f(constellation, rec0, rec1, rec2, estimated_position):
+    
+    e = (math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2), 
+        -math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
+        -rec0.dt,
+        math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2),
+        -math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2), 
+        -rec1.dt,
+        math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2),   
+        -math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
+        -rec2.dt)
+
+    error = sum(e) 
+    
+    return error
