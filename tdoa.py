@@ -15,7 +15,8 @@ dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extract
 read_data = pd.read_excel(src_address)
 errors = []; x_arr = []; y_arr = []; z_arr = []; time_arr = []
 
-for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
+#for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
+for i in range(1):
      rec0 = Recording(read_data.iloc[i,0], read_data.iloc[i,1], read_data.iloc[i,2], read_data.iloc[i,3], read_data.iloc[i,4],read_data.iloc[i,5])
      rec1 = Recording(read_data.iloc[i+1,0], read_data.iloc[i+1,1], read_data.iloc[i+1,2], read_data.iloc[i+1,3], read_data.iloc[i+1,4],read_data.iloc[i+1,5])
      rec2 = Recording(read_data.iloc[i+2,0], read_data.iloc[i+2,1], read_data.iloc[i+2,2], read_data.iloc[i+2,3], read_data.iloc[i+2,4],read_data.iloc[i+2,5])

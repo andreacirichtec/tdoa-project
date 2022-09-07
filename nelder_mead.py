@@ -1,5 +1,7 @@
+from cmath import inf
 from distutils.log import error
 from data.constellations import *
+import statistics
 
 class Simplex:
     def __init__(self, b, gb, gw, w):
@@ -86,6 +88,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
     fw = simp.w.error(constellation, rec0, rec1, rec2)
     fb = simp.b.error(constellation, rec0, rec1, rec2)
     fgw = simp.gw.error(constellation, rec0, rec1, rec2)
+    fgb = simp.gb.error(constellation, rec0, rec1, rec2)
 
     if (fr >= fb) and (fr < fgw):
         simp = Simplex(simp.b,simp.gb,simp.gw, reflected)
@@ -178,15 +181,28 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
 
 def nelder_mead_f(constellation, rec0, rec1, rec2, points, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
     
-    a = Point(0,0,1)
-    b = Point(0,1,0)
-    c = Point(1,0,0)
-    d = Point(1,1,1)
+    a = Point(3,2,1)
+    b = Point(2,1,2)
+    c = Point(-3,0,-2)
+    d = Point(-1,-1,-1)
     simp = Simplex(a,b,c,d)
 
     print(simp)
     print(simp.b.error(constellation, rec0, rec1, rec2))
 
-    simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection, expansion, contraction, shrinkage)
+    delta = 0.0000001
+    std = inf
+    while (std>delta):
+        simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection, expansion, contraction, shrinkage)
+
+        fb = simp.b.error(constellation, rec0, rec1, rec2)
+        fgb = simp.gb.error(constellation, rec0, rec1, rec2)
+        fgw = simp.gw.error(constellation, rec0, rec1, rec2)
+        fw = simp.w.error(constellation, rec0, rec1, rec2)
+
+        std = statistics.stdev([fb,fgb,fgw,fw])
+
+        print("std=",std)
+        print("error=", fb)
 
     return
