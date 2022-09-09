@@ -68,15 +68,15 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
 
     # 1. ORDER
     simp = simp.sort(constellation, rec0, rec1, rec2)
-    print(simp)
+    # print(simp)
 
     # 2. CALCULATE CENTROID
     centroid = Point(0,0,0)
     centroid.x = (simp.b.x + simp.gb.x + simp.gw.x + simp.w.x)/4
     centroid.y = (simp.b.y + simp.gb.y + simp.gw.y + simp.w.y)/4
     centroid.z = (simp.b.z + simp.gb.z + simp.gw.z + simp.w.z)/4
-    #centroid = Point(x,y,z)
-    print("centroid = ", centroid)
+    # #centroid = Point(x,y,z)
+    # print("centroid = ", centroid)
 
     # 3. REFLECTION
     reflected = Point(0,0,0)
@@ -93,7 +93,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
     if (fr >= fb) and (fr < fgw):
         simp = Simplex(simp.b,simp.gb,simp.gw, reflected)
         # go to step 1
-        print("reflection")
+        # print("reflection")
         return simp
     elif (fr < fb):
         # 4. EXPANSION
@@ -107,12 +107,12 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
         if (fe < fr):
             simp = Simplex(simp.b, simp.gb, simp.gw, expanded)
             # go to step 1
-            print("expansion")
+            # print("expansion")
             return simp
         else:
             simp = Simplex(simp.b, simp.gb, simp.gw, reflected)
             # go to step 1
-            print("expansion - reflection")
+            # print("expansion - reflection")
             return simp
     else:
         # 5. CONTRACTION
@@ -127,7 +127,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
             if (fco < fr):
                 simp = Simplex(simp.b, simp.gb, simp.gw, contracted_out)
                 # go to step 1
-                print ("contraction")
+                # print ("contraction")
                 return simp
             else:
                 # 6. SHRINKAGE
@@ -143,7 +143,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
                 simp.w.y = simp.b.y + shrinkage*(simp.w.y - simp.b.y)
                 simp.w.z = simp.b.z + shrinkage*(simp.w.z - simp.b.z)
                 # go to step 1
-                print("shrinkage")
+                # print("shrinkage")
                 return simp
         else:
             contracted_in = Point(0,0,0)
@@ -156,7 +156,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
             if (fci < fw):
                 simp = Simplex(simp.b, simp.gb, simp.gw, contracted_in)
                 # go to step 1
-                print("contraction")
+                # print("contraction")
                 return simp
             else:
                 # 6. SHRINKAGE
@@ -172,12 +172,8 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
                 simp.w.y = simp.b.y + shrinkage*(simp.w.y - simp.b.y)
                 simp.w.z = simp.b.z + shrinkage*(simp.w.z - simp.b.z)
                 # go to step 1
-                print("shrinkage")
+                # print("shrinkage")
                 return simp
-
-    # print("none of the above")
-    # print()
-    # return simp
 
 def nelder_mead_f(constellation, rec0, rec1, rec2, points, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
     
@@ -187,10 +183,7 @@ def nelder_mead_f(constellation, rec0, rec1, rec2, points, reflection = 1, expan
     d = Point(-1,-1,-1)
     simp = Simplex(a,b,c,d)
 
-    print(simp)
-    print(simp.b.error(constellation, rec0, rec1, rec2))
-
-    delta = 0.0000001
+    delta = 0.00001
     std = inf
     while (std>delta):
         simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection, expansion, contraction, shrinkage)
@@ -202,7 +195,7 @@ def nelder_mead_f(constellation, rec0, rec1, rec2, points, reflection = 1, expan
 
         std = statistics.stdev([fb,fgb,fgw,fw])
 
-        print("std=",std)
-        print("error=", fb)
+        # print("std=",std)
+        # print("error=", fb)
 
-    return
+    return simp.b, fb

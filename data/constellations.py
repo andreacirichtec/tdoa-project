@@ -15,13 +15,16 @@ class Point:
         return err
 
 class Recording:
-  def __init__(self, idA, idB, dt, x, y, z):
-    self.idA = idA
-    self.idB = idB
-    self.dt = dt
-    self.x = x
-    self.y = y
-    self.z = z
+    def __init__(self, idA, idB, dt, x, y, z):
+        self.idA = idA
+        self.idB = idB
+        self.dt = dt
+        self.x = x
+        self.y = y
+        self.z = z
+
+    def __str__(self):
+        return f"Recording: \nidA={self.idA}\nidB={self.idB}\ndt={self.dt}\n(x,y,z)=({self.x},{self.y},{self.y})"
 
 constellation1 = [Point(-2.4174718660841163,-4.020796001114614,0.18179046793237785),
                     Point(-2.820490062889947,3.5250373345173456,2.5874240006860396),
@@ -68,6 +71,6 @@ def error_f(constellation, rec0, rec1, rec2, estimated_position):
         -math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
         -rec2.dt)
 
-    error = sum(e) 
+    error = abs(sum(e)) 
     
     return error

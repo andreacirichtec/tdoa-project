@@ -8,43 +8,54 @@ from statistics import mean
 from nelder_mead import nelder_mead_f
 
 # change these addresses and file names
-src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-extracted.xlsx"
-dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-results.xlsx"
+src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-extracted.xlsx"
+dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-results.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
-errors = []; x_arr = []; y_arr = []; z_arr = []; time_arr = []
+gd_errors = []; gd_x_arr = []; gd_y_arr = []; gd_z_arr = []; gd_time_arr = []
+nm_errors = []; nm_x_arr = []; nm_y_arr = []; nm_z_arr = []; nm_time_arr = []
 
-#for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
-for i in range(1):
+for i in range(0, len(read_data)-2, 1): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
      rec0 = Recording(read_data.iloc[i,0], read_data.iloc[i,1], read_data.iloc[i,2], read_data.iloc[i,3], read_data.iloc[i,4],read_data.iloc[i,5])
      rec1 = Recording(read_data.iloc[i+1,0], read_data.iloc[i+1,1], read_data.iloc[i+1,2], read_data.iloc[i+1,3], read_data.iloc[i+1,4],read_data.iloc[i+1,5])
      rec2 = Recording(read_data.iloc[i+2,0], read_data.iloc[i+2,1], read_data.iloc[i+2,2], read_data.iloc[i+2,3], read_data.iloc[i+2,4],read_data.iloc[i+2,5])
 
      estimated_position = Point(rec2.x, rec2.y, rec2.z)
      
-     # time1 = time.time()
-     # position, final_error = gradient_descent_f(constellation1, rec0, rec1, rec2, estimated_position)
-     # time2 = time.time()
+     time1 = time.time()
+     gd_position, gd_error = gradient_descent_f(constellation1, rec0, rec1, rec2, estimated_position)
+     time2 = time.time()
+     gd_time = time2-time1
 
-     # time_arr.append(time2-time1)
-     # errors.append(final_error)
-     # x_arr.append(position.x)
-     # y_arr.append(position.y)
-     # z_arr.append(position.z)
+     gd_time_arr.append(gd_time)
+     gd_errors.append(gd_error)
+     gd_x_arr.append(gd_position.x)
+     gd_y_arr.append(gd_position.y)
+     gd_z_arr.append(gd_position.z)
 
-     nelder_mead_f(constellation1, rec0, rec1, rec2, estimated_position)
+     time3 = time.time()
+     nm_position, nm_error = nelder_mead_f(constellation1, rec0, rec1, rec2, estimated_position)
+     time4 = time.time()
+     nm_time = time4-time3
+
+     nm_time_arr.append(nm_time)
+     nm_errors.append(nm_error)
+     nm_x_arr.append(nm_position.x)
+     nm_y_arr.append(nm_position.y)
+     nm_z_arr.append(nm_position.z)
      
      print(i)
-     #print(position.x, position.y, position.z, final_error)
-     #print("error for x, y and z axis:", abs(rec2.x - position.x)*1000, "cm", abs(rec2.y - position.y)*1000, "cm", abs(rec2.z - position.z)*1000, "cm")
+     # print("gradient descent error =", gd_error)
+     # print("nelder mead error =", nm_error)
+     # print("timegd =", gd_time)
+     # print("timenm =", nm_time)
 
-#data = {'errors':errors, 'x estimated':x_arr, 'y estimated':y_arr, 'z estimated':z_arr, 'execution time':time_arr}
-#df = pd.DataFrame(data)
+data = {'GD errors':gd_errors, 'GD x estimated':gd_x_arr, 'GD y estimated':gd_y_arr, 'GD z estimated':gd_z_arr, 'GD execution time':gd_time_arr, 'NM errors':nm_errors, 'NM x estimated':nm_x_arr, 'NM y estimated':nm_y_arr, 'NM z estimated':nm_z_arr, 'NM execution time':nm_time_arr}
+df = pd.DataFrame(data)
 
-#df.to_excel(dst_address, index=False)
+df.to_excel(dst_address, index=False)
 
-#print(df.describe())
-#print("error mean = ", mean(errors))
+print(df.describe())
 
 print("DONE!")

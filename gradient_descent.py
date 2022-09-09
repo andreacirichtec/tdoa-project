@@ -1,5 +1,5 @@
 import math
-#from data.constellations import *
+from data.constellations import *
 #from data.error_function import error_f
 
 def gradient_descent_f(constellation, rec0, rec1, rec2, estimated_position, iterations = 1000, learning_rate = 0.0001, stopping_threshold = 1e-6):
