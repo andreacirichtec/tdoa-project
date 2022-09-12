@@ -45,7 +45,7 @@ plt.plot(t_arr, nm_error_arr)
 plt.xlabel('timestamp')
 plt.ylabel('error function[m]')
 plt.title('nelder mead error')
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-error-function.svg')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-updated-error-function.svg')
 
 fig.align_labels()
 
@@ -64,7 +64,7 @@ plt.xlabel('timestamp')
 plt.ylabel('x coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-x-error.svg')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-updated-x-error.svg')
 
 
 figx.align_labels()
@@ -84,7 +84,7 @@ plt.xlabel('timestamp')
 plt.ylabel('y coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-y-error.svg')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-updated-y-error.svg')
 
 figy.align_labels()
 
@@ -103,7 +103,7 @@ plt.xlabel('timestamp')
 plt.ylabel('z coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-z-error.svg')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-updated-z-error.svg')
 
 figz.align_labels()
 
