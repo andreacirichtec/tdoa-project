@@ -34,7 +34,7 @@ nm_x_err = np.subtract(nm_x_arr, x_arr)
 nm_y_err = np.subtract(nm_y_arr, y_arr)
 nm_z_err = np.subtract(nm_z_arr, z_arr)
 
-fig = plt.figure('error function', tight_layout=True)
+fig = plt.figure('error function', tight_layout=True, figsize=(16,6))
 plt.subplot(211)
 plt.plot(t_arr, gd_error_arr)
 plt.ylabel('error function[m]')
@@ -49,7 +49,7 @@ plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted
 
 fig.align_labels()
 
-figx = plt.figure('x error', tight_layout=True)
+figx = plt.figure('x error', tight_layout=True, figsize=(16,6))
 plt.subplot(211)
 plt.plot(t_arr, gd_x_arr, color = 'blue', label = 'estimated position')
 plt.plot(t_arr, x_arr, color = 'red', label = 'ground truth position')
@@ -69,7 +69,7 @@ plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted
 
 figx.align_labels()
 
-figy = plt.figure('y error', tight_layout=True)
+figy = plt.figure('y error', tight_layout=True, figsize=(16,6))
 plt.subplot(211)
 plt.plot(t_arr, gd_y_arr, color = 'blue', label = 'estimated position')
 plt.plot(t_arr, y_arr, color = 'red', label = 'ground truth position')
@@ -88,7 +88,7 @@ plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted
 
 figy.align_labels()
 
-figz = plt.figure('z error', tight_layout=True)
+figz = plt.figure('z error', tight_layout=True, figsize=(16,6))
 plt.subplot(211)
 plt.plot(t_arr, gd_z_arr, color = 'blue', label = 'estimated position')
 plt.plot(t_arr, z_arr, color = 'red', label = 'ground truth position')
