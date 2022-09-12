@@ -9,9 +9,9 @@ from statistics import mean
 from nelder_mead import nelder_mead_f
 
 # change these addresses and file names
-src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-extracted.xlsx"
-dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-results-updated.xlsx"
-describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-results-updated-describe.xlsx"
+src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa3-extracted.xlsx"
+dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa3-results-updated.xlsx"
+describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa3-results-updated-describe.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)

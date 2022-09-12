@@ -1,8 +1,8 @@
 import pandas as pd
 
 # change these addresses and file names
-src_address = "C:\\Users\\Andrea\\Documents\\ETF\\Theatre Sound\\tdoa\\data\\main_dataset\\flight-dataset\\csv-data\\const1\\const1-trial1-tdoa2.csv"
-dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-extracted.xlsx"
+src_address = "C:\\Users\\Andrea\\Documents\\ETF\\Theatre Sound\\tdoa\\data\\main_dataset\\flight-dataset\\csv-data\\const1\\const1-trial6-tdoa3.csv"
+dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa3-extracted.xlsx"
 
 # read data from the csv file
 read_data = pd.read_csv(src_address)
