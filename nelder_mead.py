@@ -183,7 +183,7 @@ def nelder_mead_f(constellation, rec0, rec1, rec2, points, reflection = 1, expan
     d = Point(-1,-1,-1)
     simp = Simplex(a,b,c,d)
 
-    delta = 0.00001
+    delta = 0.0001
     std = inf
     while (std>delta):
         simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection, expansion, contraction, shrinkage)

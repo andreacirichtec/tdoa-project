@@ -15,16 +15,17 @@ class Point:
         return err
 
 class Recording:
-    def __init__(self, idA, idB, dt, x, y, z):
+    def __init__(self, idA, idB, dt, x, y, z, timestamp):
         self.idA = idA
         self.idB = idB
         self.dt = dt
         self.x = x
         self.y = y
         self.z = z
+        self.timestamp = timestamp
 
     def __str__(self):
-        return f"Recording: \nidA={self.idA}\nidB={self.idB}\ndt={self.dt}\n(x,y,z)=({self.x},{self.y},{self.y})"
+        return f"Recording: \nidA={self.idA}\nidB={self.idB}\ndt={self.dt}\n(x,y,z)=({self.x},{self.y},{self.y}\ntimestamp={self.timestamp})"
 
 constellation1 = [Point(-2.4174718660841163,-4.020796001114614,0.18179046793237785),
                     Point(-2.820490062889947,3.5250373345173456,2.5874240006860396),
