@@ -11,9 +11,9 @@ from random import random, seed
 from nelder_mead import nelder_mead_f
 
 # change these addresses and file names
-src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial3-tdoa2-extracted.xlsx"
-dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial3-tdoa2-results-random.xlsx"
-describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial3-tdoa2-results-random-describe.xlsx"
+src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial4-tdoa2-extracted.xlsx"
+dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial4-tdoa2-results-random.xlsx"
+describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial4-tdoa2-results-random-describe.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
@@ -25,7 +25,7 @@ position_x_arr = []; position_y_arr = []; position_z_arr = []; timestamp_arr = [
 num = len(read_data)-2
 i = 0
 
-while (i < num): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
+while (i < 10): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
      k = 1
      rec0 = Recording(read_data.iloc[i,0], read_data.iloc[i,1], read_data.iloc[i,2], read_data.iloc[i,3], read_data.iloc[i,4], read_data.iloc[i,5], read_data.iloc[i,6])
      rec1 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])

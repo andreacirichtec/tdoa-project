@@ -42,10 +42,12 @@ def gradient_descent_f(constellation, rec0, rec1, rec2, estimated_position, iter
 
         derror_dz = sum(de_dz)
 
-        #print(error, estimated_position.x, estimated_position.y, estimated_position.z)
+        print(error, estimated_position.x, estimated_position.y, estimated_position.z)
 
         estimated_position.x = estimated_position.x - learning_rate*derror_dx
         estimated_position.y = estimated_position.y - learning_rate*derror_dy
         estimated_position.z = estimated_position.z - learning_rate*derror_dz
+
+        print(error, estimated_position.x, estimated_position.y, estimated_position.z)
     
     return estimated_position, previous_error
