@@ -1,17 +1,19 @@
 import math
+import random
 from sqlite3 import Timestamp
 import time
 import pandas as pd
 from data.constellations import *
 from gradient_descent import gradient_descent_f
 from statistics import mean
+from random import random, seed
 
 from nelder_mead import nelder_mead_f
 
 # change these addresses and file names
-src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa3-extracted.xlsx"
-dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa3-results-updated.xlsx"
-describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa3-results-updated-describe.xlsx"
+src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial3-tdoa2-extracted.xlsx"
+dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial3-tdoa2-results-random.xlsx"
+describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial3-tdoa2-results-random-describe.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
@@ -27,16 +29,16 @@ while (i < num): #možda treba korak da bude 3, ali sa korakom 1 ima više len(r
      k = 1
      rec0 = Recording(read_data.iloc[i,0], read_data.iloc[i,1], read_data.iloc[i,2], read_data.iloc[i,3], read_data.iloc[i,4], read_data.iloc[i,5], read_data.iloc[i,6])
      rec1 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
-     while ((rec0.idA == rec1.idA) and (rec0.idB == rec1.idB)) or ((rec0.idA == rec1.idB) and (rec0.idB == rec1.idA)):
-          k += 1
-          rec1 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
-          num -= 1
+     # while ((rec0.idA == rec1.idA) and (rec0.idB == rec1.idB)) or ((rec0.idA == rec1.idB) and (rec0.idB == rec1.idA)):
+     #      k += 1
+     #      rec1 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
+     #      num -= 1
      k += 1
      rec2 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
-     while ((rec0.idA == rec2.idA) and (rec0.idB == rec2.idB)) or ((rec0.idA == rec2.idB) and (rec0.idB == rec2.idA)) or ((rec1.idA == rec2.idA) and (rec1.idB == rec2.idB)) or ((rec1.idA == rec2.idB) and (rec1.idB == rec2.idA)):
-          k += 1
-          rec2 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
-          num -= 1
+     # while ((rec0.idA == rec2.idA) and (rec0.idB == rec2.idB)) or ((rec0.idA == rec2.idB) and (rec0.idB == rec2.idA)) or ((rec1.idA == rec2.idA) and (rec1.idB == rec2.idB)) or ((rec1.idA == rec2.idB) and (rec1.idB == rec2.idA)):
+     #      k += 1
+     #      rec2 = Recording(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
+     #      num -= 1
      i += 1
 
      idA0_arr.append(rec0.idA)
@@ -50,7 +52,12 @@ while (i < num): #možda treba korak da bude 3, ali sa korakom 1 ima više len(r
      position_z_arr.append((rec0.z + rec1.z + rec2.z)/3)
      timestamp_arr.append((rec0.timestamp + rec1.timestamp + rec2.timestamp)/3)
 
-     estimated_position = Point(rec2.x, rec2.y, rec2.z) #RANDOM TAČKA U PROSTORU
+     min = -5; max = 5
+     randx = min + (random() * (max - min))
+     randy = min + (random() * (max - min))
+     randz = min + (random() * (max - min))
+
+     estimated_position = Point(randx, randy, randz) #RANDOM TAČKA U PROSTORU
      
      time1 = time.time()
      gd_position, gd_error = gradient_descent_f(constellation1, rec0, rec1, rec2, estimated_position)
@@ -64,7 +71,7 @@ while (i < num): #možda treba korak da bude 3, ali sa korakom 1 ima više len(r
      gd_z_arr.append(gd_position.z)
 
      time3 = time.time()
-     nm_position, nm_error = nelder_mead_f(constellation1, rec0, rec1, rec2, estimated_position)
+     nm_position, nm_error = nelder_mead_f(constellation1, rec0, rec1, rec2)
      time4 = time.time()
      nm_time = time4-time3
 

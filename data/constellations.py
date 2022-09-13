@@ -8,7 +8,7 @@ class Point:
         self.z = z
 
     def __str__(self):
-        return f"({self.x},{self.y},{self.y})"
+        return f"({self.x},{self.y},{self.z})"
 
     def error(self, constellation, rec0, rec1, rec2):
         err = error_f(constellation, rec0, rec1, rec2, self)

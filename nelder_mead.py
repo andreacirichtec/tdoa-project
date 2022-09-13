@@ -2,6 +2,7 @@ from cmath import inf
 from distutils.log import error
 from data.constellations import *
 import statistics
+from random import random
 
 class Simplex:
     def __init__(self, b, gb, gw, w):
@@ -64,7 +65,7 @@ class Simplex:
         else:
             return Simplex(lowest_point,middle2_point,middle1_point,highest_point)
 
-def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
+def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
 
     # 1. ORDER
     simp = simp.sort(constellation, rec0, rec1, rec2)
@@ -175,18 +176,36 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection =
                 # print("shrinkage")
                 return simp
 
-def nelder_mead_f(constellation, rec0, rec1, rec2, points, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
+def nelder_mead_f(constellation, rec0, rec1, rec2, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
     
-    a = Point(3,2,1)
-    b = Point(2,1,2)
-    c = Point(-3,0,-2)
-    d = Point(-1,-1,-1)
+    #staviti random vrednosti
+    min = -5; max = 5
+    randx = min + (random() * (max - min))
+    randy = min + (random() * (max - min))
+    randz = min + (random() * (max - min))
+    a = Point(randx,randy,randz)
+    # print(a)
+    randx = min + (random() * (max - min))
+    randy = min + (random() * (max - min))
+    randz = min + (random() * (max - min))
+    b = Point(randx,randy,randz)
+    # print(b)
+    randx = min + (random() * (max - min))
+    randy = min + (random() * (max - min))
+    randz = min + (random() * (max - min))
+    c = Point(randx,randy,randz)
+    # print(c)
+    randx = min + (random() * (max - min))
+    randy = min + (random() * (max - min))
+    randz = min + (random() * (max - min))
+    d = Point(randx,randy,randz)
+    # print(d)
     simp = Simplex(a,b,c,d)
 
     delta = 0.0001
     std = inf
     while (std>delta):
-        simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, points, reflection, expansion, contraction, shrinkage)
+        simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection, expansion, contraction, shrinkage)
 
         fb = simp.b.error(constellation, rec0, rec1, rec2)
         fgb = simp.gb.error(constellation, rec0, rec1, rec2)
