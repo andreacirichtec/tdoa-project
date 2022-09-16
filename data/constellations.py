@@ -1,4 +1,5 @@
 import math
+from pickle import FALSE, TRUE
 #from constellations import *
 
 class Point:
@@ -13,6 +14,17 @@ class Point:
     def error(self, constellation, rec0, rec1, rec2):
         err = error_f(constellation, rec0, rec1, rec2, self)
         return err
+
+    def is_inside(self):
+        min_x = -5; max_x = 5
+        min_y = -5; max_y = 5
+        min_z = 0; max_z = 4
+
+        if(self.x > min_x) and (self.x < max_x):
+            if(self.y > min_y) and (self.y < max_y):
+                if(self.z > min_z) and (self.z < max_z):
+                    return 1
+        return 0
 
 class Recording:
     def __init__(self, idA, idB, dt, x, y, z, timestamp):
@@ -65,11 +77,11 @@ def error_f(constellation, rec0, rec1, rec2, estimated_position):
     e = (math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2), 
         -math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
         -rec0.dt,
-        math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2),
-        -math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2), 
+        math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2),
+        -math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2), 
         -rec1.dt,
-        math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2),   
-        -math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
+        math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2),   
+        -math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2),
         -rec2.dt)
 
     error = abs(sum(e)) 

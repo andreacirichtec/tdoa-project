@@ -65,6 +65,7 @@ class Simplex:
         else:
             return Simplex(lowest_point,middle2_point,middle1_point,highest_point)
 
+
 def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
 
     # 1. ORDER
@@ -91,12 +92,13 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
     fgw = simp.gw.error(constellation, rec0, rec1, rec2)
     fgb = simp.gb.error(constellation, rec0, rec1, rec2)
 
-    if (fr >= fb) and (fr < fgw):
+    if ((fr >= fb) and (fr < fgw) and (reflected.is_inside())):
         simp = Simplex(simp.b,simp.gb,simp.gw, reflected)
         # go to step 1
         # print("reflection")
+        # print(reflected)
         return simp
-    elif (fr < fb):
+    elif ((fr < fb) and (reflected.is_inside())):
         # 4. EXPANSION
         expanded = Point(0,0,0)
         expanded.x = centroid.x + expansion*(reflected.x - centroid.x)
@@ -105,15 +107,17 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
 
         fe = expanded.error(constellation, rec0, rec1, rec2)
 
-        if (fe < fr):
+        if ((fe < fr) and (expanded.is_inside())):
             simp = Simplex(simp.b, simp.gb, simp.gw, expanded)
             # go to step 1
             # print("expansion")
+            # print(expanded)
             return simp
         else:
             simp = Simplex(simp.b, simp.gb, simp.gw, reflected)
             # go to step 1
             # print("expansion - reflection")
+            # print(reflected)
             return simp
     else:
         # 5. CONTRACTION
@@ -125,10 +129,11 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
 
             fco = contracted_out.error(constellation, rec0, rec1, rec2)
 
-            if (fco < fr):
+            if ((fco < fr) and (contracted_out.is_inside())):
                 simp = Simplex(simp.b, simp.gb, simp.gw, contracted_out)
                 # go to step 1
-                # print ("contraction")
+                # print ("contraction out")
+                # print(contracted_out)
                 return simp
             else:
                 # 6. SHRINKAGE
@@ -145,6 +150,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
                 simp.w.z = simp.b.z + shrinkage*(simp.w.z - simp.b.z)
                 # go to step 1
                 # print("shrinkage")
+                # print(simp)
                 return simp
         else:
             contracted_in = Point(0,0,0)
@@ -158,6 +164,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
                 simp = Simplex(simp.b, simp.gb, simp.gw, contracted_in)
                 # go to step 1
                 # print("contraction")
+                # print(contracted_in)
                 return simp
             else:
                 # 6. SHRINKAGE
@@ -174,32 +181,36 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
                 simp.w.z = simp.b.z + shrinkage*(simp.w.z - simp.b.z)
                 # go to step 1
                 # print("shrinkage")
+                # print(simp)
                 return simp
 
-def nelder_mead_f(constellation, rec0, rec1, rec2, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
+def nelder_mead_f(constellation, rec0, rec1, rec2, estimated_position, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
     
-    #staviti random vrednosti
-    min = -5; max = 5
-    randx = min + (random() * (max - min))
-    randy = min + (random() * (max - min))
-    randz = min + (random() * (max - min))
+    min_x = -5; max_x = 5
+    min_y = -5; max_y = 5
+    min_z = 0; max_z = 4
+    randx = min_x + (random() * (max_x - min_x))
+    randy = min_y + (random() * (max_y - min_y))
+    randz = min_z + (random() * (max_z - min_z))
     a = Point(randx,randy,randz)
     # print(a)
-    randx = min + (random() * (max - min))
-    randy = min + (random() * (max - min))
-    randz = min + (random() * (max - min))
+    randx = min_x + (random() * (max_x - min_x))
+    randy = min_y + (random() * (max_y - min_y))
+    randz = min_z + (random() * (max_z - min_z))
     b = Point(randx,randy,randz)
     # print(b)
-    randx = min + (random() * (max - min))
-    randy = min + (random() * (max - min))
-    randz = min + (random() * (max - min))
+    randx = min_x + (random() * (max_x - min_x))
+    randy = min_y + (random() * (max_y - min_y))
+    randz = min_z + (random() * (max_z - min_z))
     c = Point(randx,randy,randz)
     # print(c)
-    randx = min + (random() * (max - min))
-    randy = min + (random() * (max - min))
-    randz = min + (random() * (max - min))
-    d = Point(randx,randy,randz)
-    # print(d)
+    # randx = min_x + (random() * (max_x - min_x))
+    # randy = min_y + (random() * (max_y - min_y))
+    # randz = min_z + (random() * (max_z - min_z))
+    # d = Point(randx,randy,randz)
+    # # print(d)
+
+    d = estimated_position
     simp = Simplex(a,b,c,d)
 
     delta = 0.0001
@@ -217,4 +228,5 @@ def nelder_mead_f(constellation, rec0, rec1, rec2, reflection = 1, expansion = 2
         # print("std=",std)
         # print("error=", fb)
 
+    # print(simp.b)
     return simp.b, fb
