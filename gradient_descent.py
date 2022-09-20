@@ -1,14 +1,13 @@
 import math
 from data.constellations import *
-#from data.error_function import error_f
 
-def gradient_descent_f(constellation, rec0, rec1, rec2, estimated_position, iterations = 1000, learning_rate = 0.0001, stopping_threshold = 1e-6):
+def gradient_descent_f(estimated_position, iterations = 1000, learning_rate = 0.0001, stopping_threshold = 1e-6):
     
     previous_error = 1e6
 
     for i in range(iterations):
 
-        error = error_f(constellation, rec0, rec1, rec2, estimated_position)
+        error = error_f_gd(estimated_position)
 
         if (abs(previous_error) < abs(error)) or abs(previous_error-error)<=stopping_threshold:
             return estimated_position, previous_error

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # change these addresses and file names
-src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-results-new.xlsx"
+src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-results-scipynm.xlsx"
 
 read_data = pd.read_excel(src_address)
 
@@ -45,7 +45,7 @@ plt.plot(t_arr, nm_error_arr)
 plt.xlabel('timestamp')
 plt.ylabel('error function[m]')
 plt.title('nelder mead error')
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-new-error-function.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-scipynm-error-function.png')
 
 fig.align_labels()
 
@@ -64,7 +64,7 @@ plt.xlabel('timestamp')
 plt.ylabel('x coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-new-x-error.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-scipynm-x-error.png')
 
 figx.align_labels()
 
@@ -83,7 +83,7 @@ plt.xlabel('timestamp')
 plt.ylabel('y coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-new-y-error.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-scipynm-y-error.png')
 
 figy.align_labels()
 
@@ -102,7 +102,7 @@ plt.xlabel('timestamp')
 plt.ylabel('z coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-new-z-error.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-scipynm-z-error.png')
 
 figz.align_labels()
 
@@ -114,7 +114,7 @@ ax.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 # ax.scatter3D(gd_x_arr, gd_y_arr, gd_z_arr, 'blue', label = 'estimated position')
 # ax.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-new-3d-gd.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-scipynm-3d-gd.png')
 
 fig3d_nm = plt.figure('nelder mead tracing', tight_layout=True)
 plt.title('nelder mead')
@@ -122,6 +122,6 @@ bx = plt.axes(projection='3d')
 bx.plot3D(nm_x_arr, nm_y_arr, nm_z_arr, 'blue', label = 'estimated position')
 bx.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 plt.legend()
-plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-new-3d-nm.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2-scipynm-3d-nm.png')
 
 plt.show()

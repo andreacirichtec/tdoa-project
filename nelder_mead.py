@@ -1,8 +1,8 @@
 from cmath import inf
-from distutils.log import error
-from data.constellations import *
 import statistics
 from random import random
+
+from data.constellations import *
 
 class Simplex:
     def __init__(self, b, gb, gw, w):
@@ -14,11 +14,11 @@ class Simplex:
     def __str__(self):
         return f"Simplex(b(x,y,z),gb(x,y,z),gw(x,y,z),w(x,y,z)) = ({self.b},{self.gb},{self.gw},{self.w})"
 
-    def sort(self, constellation, rec0, rec1, rec2):
-        f0 = self.b.error(constellation, rec0, rec1, rec2)
-        f1 = self.gb.error(constellation, rec0, rec1, rec2)
-        f2 = self.gw.error(constellation, rec0, rec1, rec2)
-        f3 = self.w.error(constellation, rec0, rec1, rec2)
+    def sort(self):
+        f0 = self.b.error()
+        f1 = self.gb.error()
+        f2 = self.gw.error()
+        f3 = self.w.error()
 
         if (f0 < f1):
             low1 = f0
@@ -66,10 +66,11 @@ class Simplex:
             return Simplex(lowest_point,middle2_point,middle1_point,highest_point)
 
 
-def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
+def nelder_mead_step(simp, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
 
+    global constellation
     # 1. ORDER
-    simp = simp.sort(constellation, rec0, rec1, rec2)
+    simp = simp.sort()
     # print(simp)
 
     # 2. CALCULATE CENTROID
@@ -86,11 +87,11 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
     reflected.y = centroid.y + reflection*(centroid.y - simp.w.y)
     reflected.z = centroid.z + reflection*(centroid.z - simp.w.z)
 
-    fr = reflected.error(constellation, rec0, rec1, rec2)
-    fw = simp.w.error(constellation, rec0, rec1, rec2)
-    fb = simp.b.error(constellation, rec0, rec1, rec2)
-    fgw = simp.gw.error(constellation, rec0, rec1, rec2)
-    fgb = simp.gb.error(constellation, rec0, rec1, rec2)
+    fr = reflected.error()
+    fw = simp.w.error()
+    fb = simp.b.error()
+    fgw = simp.gw.error()
+    fgb = simp.gb.error()
 
     if ((fr >= fb) and (fr < fgw) and (reflected.is_inside())):
         simp = Simplex(simp.b,simp.gb,simp.gw, reflected)
@@ -105,7 +106,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
         expanded.y = centroid.y + expansion*(reflected.y - centroid.y)
         expanded.z = centroid.z + expansion*(reflected.z - centroid.z)
 
-        fe = expanded.error(constellation, rec0, rec1, rec2)
+        fe = expanded.error()
 
         if ((fe < fr) and (expanded.is_inside())):
             simp = Simplex(simp.b, simp.gb, simp.gw, expanded)
@@ -127,7 +128,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
             contracted_out.y = centroid.y + contraction*(reflected.y - centroid.y)
             contracted_out.z = centroid.z + contraction*(reflected.z - centroid.z)
 
-            fco = contracted_out.error(constellation, rec0, rec1, rec2)
+            fco = contracted_out.error()
 
             if ((fco < fr) and (contracted_out.is_inside())):
                 simp = Simplex(simp.b, simp.gb, simp.gw, contracted_out)
@@ -158,7 +159,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
             contracted_in.y = centroid.y + contraction*(simp.w.y - centroid.y)
             contracted_in.z = centroid.z + contraction*(simp.w.z - centroid.z)
 
-            fci = contracted_in.error(constellation, rec0, rec1, rec2)
+            fci = contracted_in.error()
 
             if (fci < fw):
                 simp = Simplex(simp.b, simp.gb, simp.gw, contracted_in)
@@ -184,7 +185,7 @@ def nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection = 1, expa
                 # print(simp)
                 return simp
 
-def nelder_mead_f(constellation, rec0, rec1, rec2, estimated_position, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
+def nelder_mead_f(estimated_position, reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 0.5):
     
     min_x = -5; max_x = 5
     min_y = -5; max_y = 5
@@ -216,12 +217,12 @@ def nelder_mead_f(constellation, rec0, rec1, rec2, estimated_position, reflectio
     delta = 0.0001
     std = inf
     while (std>delta):
-        simp = nelder_mead_step(simp, constellation, rec0, rec1, rec2, reflection, expansion, contraction, shrinkage)
+        simp = nelder_mead_step(simp, reflection, expansion, contraction, shrinkage)
 
-        fb = simp.b.error(constellation, rec0, rec1, rec2)
-        fgb = simp.gb.error(constellation, rec0, rec1, rec2)
-        fgw = simp.gw.error(constellation, rec0, rec1, rec2)
-        fw = simp.w.error(constellation, rec0, rec1, rec2)
+        fb = simp.b.error()
+        fgb = simp.gb.error()
+        fgw = simp.gw.error()
+        fw = simp.w.error()
 
         std = statistics.stdev([fb,fgb,fgw,fw])
 

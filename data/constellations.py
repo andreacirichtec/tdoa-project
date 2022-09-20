@@ -1,6 +1,5 @@
 import math
 from pickle import FALSE, TRUE
-#from constellations import *
 
 class Point:
     def __init__(self, x, y, z):
@@ -11,8 +10,8 @@ class Point:
     def __str__(self):
         return f"({self.x},{self.y},{self.z})"
 
-    def error(self, constellation, rec0, rec1, rec2):
-        err = error_f(constellation, rec0, rec1, rec2, self)
+    def error(self):
+        err = error_f_nm(self)
         return err
 
     def is_inside(self):
@@ -28,6 +27,15 @@ class Point:
 
 class Recording:
     def __init__(self, idA, idB, dt, x, y, z, timestamp):
+        self.idA = idA
+        self.idB = idB
+        self.dt = dt
+        self.x = x
+        self.y = y
+        self.z = z
+        self.timestamp = timestamp
+
+    def change(self, idA, idB, dt, x, y, z, timestamp):
         self.idA = idA
         self.idB = idB
         self.dt = dt
@@ -72,7 +80,11 @@ constellation4 = [Point(-3.0101983925222484,-4.058910586060332,0.196289711815028
                     Point(3.4654089074024688,3.55896956542648,2.9710608167433157),
                     Point(-3.2112336178645373,3.304121110232922,0.17617659290117677)]
 
-def error_f(constellation, rec0, rec1, rec2, estimated_position):
+constellation = constellation1
+
+def error_f_gd(estimated_position):
+
+    global constellation
     
     e1 = (math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2), 
         -math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
@@ -84,6 +96,62 @@ def error_f(constellation, rec0, rec1, rec2, estimated_position):
 
     e3 = (math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2),   
         -math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2),
+        -rec2.dt)
+
+    error = (sum(e1))**2 + (sum(e2))**2 + (sum(e3))**2
+    
+    return error
+
+rec0 = Recording(0,0,0,0,0,0,0)
+rec1 = Recording(0,0,0,0,0,0,0)
+rec2 = Recording(0,0,0,0,0,0,0)
+
+def get_recordings(read_data, i):
+
+    global rec0
+    global rec1
+    global rec2
+
+    num = len(read_data)-2
+
+    k = 1
+    rec0.change(read_data.iloc[i,0], read_data.iloc[i,1], read_data.iloc[i,2], read_data.iloc[i,3], read_data.iloc[i,4], read_data.iloc[i,5], read_data.iloc[i,6])
+    rec1.change(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
+    while ((rec0.idA == rec1.idA) and (rec0.idB == rec1.idB)) or ((rec0.idA == rec1.idB) and (rec0.idB == rec1.idA)):
+        k += 1
+        rec1.change(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
+        num -= 1
+    k += 1
+    rec2.change(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
+    while ((rec0.idA == rec2.idA) and (rec0.idB == rec2.idB)) or ((rec0.idA == rec2.idB) and (rec0.idB == rec2.idA)) or ((rec1.idA == rec2.idA) and (rec1.idB == rec2.idB)) or ((rec1.idA == rec2.idB) and (rec1.idB == rec2.idA)):
+        k += 1
+        rec2.change(read_data.iloc[i+k,0], read_data.iloc[i+k,1], read_data.iloc[i+k,2], read_data.iloc[i+k,3], read_data.iloc[i+k,4], read_data.iloc[i+k,5], read_data.iloc[i+k,6])
+        num -= 1
+
+def error_f_nm(a):
+
+    global constellation
+    global rec0
+    global rec1
+    global rec2
+
+    min_x = -5; max_x = 5
+    min_y = -5; max_y = 5
+    min_z = 0; max_z = 4
+
+    if (a[0]>max_x) or (a[0]<min_x) or (a[1]>max_y) or (a[1]<min_y) or (a[2]>max_z) or (a[2]<min_z):
+        return 1000000000000
+    
+    e1 = (math.sqrt((constellation[rec0.idA].x-a[0])**2+(constellation[rec0.idA].y-a[1])**2+(constellation[rec0.idA].z-a[2])**2), 
+        -math.sqrt((constellation[rec0.idB].x-a[0])**2+(constellation[rec0.idB].y-a[1])**2+(constellation[rec0.idB].z-a[2])**2),
+        -rec0.dt)
+
+    e2 = (math.sqrt((constellation[rec1.idA].x-a[0])**2+(constellation[rec1.idA].y-a[1])**2+(constellation[rec1.idA].z-a[2])**2),
+        -math.sqrt((constellation[rec1.idB].x-a[0])**2+(constellation[rec1.idB].y-a[1])**2+(constellation[rec1.idB].z-a[2])**2), 
+        -rec1.dt)
+
+    e3 = (math.sqrt((constellation[rec2.idA].x-a[0])**2+(constellation[rec2.idA].y-a[1])**2+(constellation[rec2.idA].z-a[2])**2),   
+        -math.sqrt((constellation[rec2.idB].x-a[0])**2+(constellation[rec2.idB].y-a[1])**2+(constellation[rec2.idB].z-a[2])**2),
         -rec2.dt)
 
     error = (sum(e1))**2 + (sum(e2))**2 + (sum(e3))**2
