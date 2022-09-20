@@ -23,7 +23,7 @@ position_x_arr = []; position_y_arr = []; position_z_arr = []; timestamp_arr = [
 num = len(read_data)-2
 i = 0
 
-while (i < 1000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
+while (i < num): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
      
      print(i, "of", num)
      get_recordings(read_data, i)
@@ -54,7 +54,7 @@ while (i < 1000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(
      time3 = time.time()
      #nm_position, nm_error = nelder_mead_f(estimated_position_nm)
 
-     nm_result = minimize(error_f_nm, estimated_position_nm, tol=1e-6)
+     nm_result = minimize(error_f_nm, estimated_position_nm, method='Nelder-Mead', tol=1e-6)
      # print(nm_result)
      estimated_position_nm = [nm_result.x[0], nm_result.x[1], nm_result.x[2]]
      time4 = time.time()
