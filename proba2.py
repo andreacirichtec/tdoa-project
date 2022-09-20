@@ -13,6 +13,6 @@ randy = min_y + (random() * (max_y - min_y))
 randz = min_z + (random() * (max_z - min_z))
 
 x0 = [randx, randy, randz]
-result = minimize(error_fu, x0, tol=1e-6)
+result = minimize(error_fu, x0, method='Nelder-Mead', tol=1e-6)
 
 print(result)

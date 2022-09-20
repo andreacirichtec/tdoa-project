@@ -23,7 +23,7 @@ position_x_arr = []; position_y_arr = []; position_z_arr = []; timestamp_arr = [
 num = len(read_data)-2
 i = 0
 
-while (i < num): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
+while (i < 10000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
      
      print(i, "of", num)
      get_recordings(read_data, i)
