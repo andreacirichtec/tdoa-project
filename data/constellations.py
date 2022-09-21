@@ -88,17 +88,18 @@ def error_f_gd(estimated_position):
     
     e1 = (math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2), 
         -math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2),
-        -rec0.dt)
+        rec0.dt)
 
     e2 = (math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2),
         -math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2), 
-        -rec1.dt)
+        rec1.dt)
 
     e3 = (math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2),   
         -math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2),
-        -rec2.dt)
+        rec2.dt)
 
-    error = (sum(e1))**2 + (sum(e2))**2 + (sum(e3))**2
+    # error = (sum(e1))**2 + (sum(e2))**2 + (sum(e3))**2
+    error = (sum(e1)) + (sum(e2)) + (sum(e3))
     
     return error
 
@@ -145,15 +146,15 @@ def error_f_nm(a):
     
     e1 = (math.sqrt((constellation[rec0.idA].x-a[0])**2+(constellation[rec0.idA].y-a[1])**2+(constellation[rec0.idA].z-a[2])**2), 
         -math.sqrt((constellation[rec0.idB].x-a[0])**2+(constellation[rec0.idB].y-a[1])**2+(constellation[rec0.idB].z-a[2])**2),
-        -rec0.dt) 
+        rec0.dt) 
 
     e2 = (math.sqrt((constellation[rec1.idA].x-a[0])**2+(constellation[rec1.idA].y-a[1])**2+(constellation[rec1.idA].z-a[2])**2),
         -math.sqrt((constellation[rec1.idB].x-a[0])**2+(constellation[rec1.idB].y-a[1])**2+(constellation[rec1.idB].z-a[2])**2), 
-        -rec1.dt)
+        rec1.dt)
 
     e3 = (math.sqrt((constellation[rec2.idA].x-a[0])**2+(constellation[rec2.idA].y-a[1])**2+(constellation[rec2.idA].z-a[2])**2),   
         -math.sqrt((constellation[rec2.idB].x-a[0])**2+(constellation[rec2.idB].y-a[1])**2+(constellation[rec2.idB].z-a[2])**2),
-        -rec2.dt)
+        rec2.dt)
 
     error = (sum(e1))**2 + (sum(e2))**2 + (sum(e3))**2
     
