@@ -135,6 +135,7 @@ def error_f_nm(a):
     global rec1
     global rec2
 
+
     min_x = -5; max_x = 5
     min_y = -5; max_y = 5
     min_z = 0; max_z = 4
@@ -144,7 +145,7 @@ def error_f_nm(a):
     
     e1 = (math.sqrt((constellation[rec0.idA].x-a[0])**2+(constellation[rec0.idA].y-a[1])**2+(constellation[rec0.idA].z-a[2])**2), 
         -math.sqrt((constellation[rec0.idB].x-a[0])**2+(constellation[rec0.idB].y-a[1])**2+(constellation[rec0.idB].z-a[2])**2),
-        -rec0.dt)
+        -rec0.dt) 
 
     e2 = (math.sqrt((constellation[rec1.idA].x-a[0])**2+(constellation[rec1.idA].y-a[1])**2+(constellation[rec1.idA].z-a[2])**2),
         -math.sqrt((constellation[rec1.idB].x-a[0])**2+(constellation[rec1.idB].y-a[1])**2+(constellation[rec1.idB].z-a[2])**2), 

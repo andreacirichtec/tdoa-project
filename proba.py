@@ -3,6 +3,8 @@ import statistics
 from random import random
 from timeit import repeat
 import matplotlib.pyplot as plt
+from data.constellations import *
+import pandas as pd
 
 import matplotlib.animation as animation
 
@@ -270,7 +272,28 @@ def nelder_mead_f(reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 
     # print(simp.b)
     return simp.b, fb
 
-nm_position, nm_error = nelder_mead_f()
+#nm_position, nm_error = nelder_mead_f()
 
-print("Odredjena pozicija", nm_position)
-print("greska =", nm_error)
+src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-extracted.xlsx"
+
+# read data from the csv file
+read_data = pd.read_excel(src_address)
+num = len(read_data)-2
+i = 0
+error = []
+
+for i in range(0, num, 3):
+    get_recordings(read_data, i)
+
+    error.append(error_f_nm([rec0.x, rec0.y, rec0.z]))
+    error.append(error_f_nm([rec1.x, rec1.y, rec1.z]))
+    error.append(error_f_nm([rec2.x, rec2.y, rec2.z]))
+
+    print(i)
+
+plt.figure()
+plt.plot(error)
+plt.show()
+
+# print("Odredjena pozicija", nm_position)
+# print("greska =", nm_error)
