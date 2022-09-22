@@ -274,7 +274,8 @@ def nelder_mead_f(reflection = 1, expansion = 2, contraction = 0.5, shrinkage = 
 
 #nm_position, nm_error = nelder_mead_f()
 
-src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-extracted.xlsx"
+#src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial1-tdoa2-extracted.xlsx"
+src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-extracted.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
