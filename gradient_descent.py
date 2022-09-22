@@ -1,60 +1,63 @@
 import math
 from data.constellations import *
 
-def gradient_descent_f(constellation, rec0, rec1, rec2, estimated_position, iterations = 1000, learning_rate = 0.0001, stopping_threshold = 1e-6):
+def gradient_descent_f(estimated_position, iterations = 1000, learning_rate = 0.0001, stopping_threshold = 1e-6):
     
     previous_error = 1e6
 
     for i in range(iterations):
 
-        e = (math.sqrt((constellation3[rec0.idA].x-estimated_position.x)**2+(constellation3[rec0.idA].y-estimated_position.y)**2+(constellation3[rec0.idA].z-estimated_position.z)**2), 
-        -math.sqrt((constellation3[rec0.idB].x-estimated_position.x)**2+(constellation3[rec0.idB].y-estimated_position.y)**2+(constellation3[rec0.idB].z-estimated_position.z)**2),
-        -rec0.dt,
-        math.sqrt((constellation3[rec1.idA].x-estimated_position.x)**2+(constellation3[rec1.idA].y-estimated_position.y)**2+(constellation3[rec0.idA].z-estimated_position.z)**2),
-        -math.sqrt((constellation3[rec1.idB].x-estimated_position.x)**2+(constellation3[rec1.idB].y-estimated_position.y)**2+(constellation3[rec0.idB].z-estimated_position.z)**2), 
-        -rec1.dt,
-        math.sqrt((constellation3[rec2.idA].x-estimated_position.x)**2+(constellation3[rec2.idA].y-estimated_position.y)**2+(constellation3[rec0.idA].z-estimated_position.z)**2),   
-        -math.sqrt((constellation3[rec2.idB].x-estimated_position.x)**2+(constellation3[rec2.idB].y-estimated_position.y)**2+(constellation3[rec0.idB].z-estimated_position.z)**2),
-        -rec2.dt)
-
-        error = sum(e) 
+        error = error_f_gd(estimated_position)
 
         if (abs(previous_error) < abs(error)) or abs(previous_error-error)<=stopping_threshold:
             return estimated_position, previous_error
 
         previous_error = error
 
-        de_dx = ((constellation3[rec0.idB].x-estimated_position.x)/(math.sqrt((constellation3[rec0.idB].x-estimated_position.x)**2+(constellation3[rec0.idB].y-estimated_position.y)**2+(constellation3[rec0.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec0.idA].x-estimated_position.x)/(math.sqrt((constellation3[rec0.idA].x-estimated_position.x)**2+(constellation3[rec0.idA].y-estimated_position.y)**2+(constellation3[rec0.idA].z-estimated_position.z)**2)), 
-                (constellation3[rec1.idB].x-estimated_position.x)/(math.sqrt((constellation3[rec1.idB].x-estimated_position.x)**2+(constellation3[rec1.idB].y-estimated_position.y)**2+(constellation3[rec1.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec1.idA].x-estimated_position.x)/(math.sqrt((constellation3[rec1.idA].x-estimated_position.x)**2+(constellation3[rec1.idA].y-estimated_position.y)**2+(constellation3[rec1.idA].z-estimated_position.z)**2)),
-                (constellation3[rec2.idB].x-estimated_position.x)/(math.sqrt((constellation3[rec2.idB].x-estimated_position.x)**2+(constellation3[rec2.idB].y-estimated_position.y)**2+(constellation3[rec2.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec2.idA].x-estimated_position.x)/(math.sqrt((constellation3[rec2.idA].x-estimated_position.x)**2+(constellation3[rec2.idA].y-estimated_position.y)**2+(constellation3[rec2.idA].z-estimated_position.z)**2)))
+        # de_dx = ((constellation[rec0.idB].x-estimated_position.x)/(math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec0.idA].x-estimated_position.x)/(math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)), 
+        #         (constellation[rec1.idB].x-estimated_position.x)/(math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec1.idA].x-estimated_position.x)/(math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2)),
+        #         (constellation[rec2.idB].x-estimated_position.x)/(math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec2.idA].x-estimated_position.x)/(math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2)))
 
-        derror_dx = sum(de_dx)        
+        derror_dx = 2*(((constellation[rec2.idB].x-estimated_position.x)/(math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2))+(estimated_position.x-constellation[rec2.idA].x)/(math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2)-rec2.dt+math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2))+\
+                       ((constellation[rec1.idB].x-estimated_position.x)/(math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2))+(estimated_position.x-constellation[rec1.idA].x)/(math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2)-rec1.dt+math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2))+\
+                       ((constellation[rec0.idB].x-estimated_position.x)/(math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2))+(estimated_position.x-constellation[rec0.idA].x)/(math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2)-rec0.dt+math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)))
 
-        de_dy = ((constellation3[rec0.idB].y-estimated_position.y)/(math.sqrt((constellation3[rec0.idB].x-estimated_position.x)**2+(constellation3[rec0.idB].y-estimated_position.y)**2+(constellation3[rec0.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec0.idA].y-estimated_position.y)/(math.sqrt((constellation3[rec0.idA].x-estimated_position.x)**2+(constellation3[rec0.idA].y-estimated_position.y)**2+(constellation3[rec0.idA].z-estimated_position.z)**2)), 
-                (constellation3[rec1.idB].y-estimated_position.y)/(math.sqrt((constellation3[rec1.idB].x-estimated_position.x)**2+(constellation3[rec1.idB].y-estimated_position.y)**2+(constellation3[rec1.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec1.idA].y-estimated_position.y)/(math.sqrt((constellation3[rec1.idA].x-estimated_position.x)**2+(constellation3[rec1.idA].y-estimated_position.y)**2+(constellation3[rec1.idA].z-estimated_position.z)**2)),
-                (constellation3[rec2.idB].y-estimated_position.y)/(math.sqrt((constellation3[rec2.idB].x-estimated_position.x)**2+(constellation3[rec2.idB].y-estimated_position.y)**2+(constellation3[rec2.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec2.idA].y-estimated_position.y)/(math.sqrt((constellation3[rec2.idA].x-estimated_position.x)**2+(constellation3[rec2.idA].y-estimated_position.y)**2+(constellation3[rec2.idA].z-estimated_position.z)**2)))
+        # derror_dx = sum(de_dx)        
 
-        derror_dy = sum(de_dy)
+        # de_dy = ((constellation[rec0.idB].y-estimated_position.y)/(math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec0.idA].y-estimated_position.y)/(math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)), 
+        #         (constellation[rec1.idB].y-estimated_position.y)/(math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec1.idA].y-estimated_position.y)/(math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2)),
+        #         (constellation[rec2.idB].y-estimated_position.y)/(math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec2.idA].y-estimated_position.y)/(math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2)))
 
-        de_dz = ((constellation3[rec0.idB].z-estimated_position.z)/(math.sqrt((constellation3[rec0.idB].x-estimated_position.x)**2+(constellation3[rec0.idB].y-estimated_position.y)**2+(constellation3[rec0.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec0.idA].z-estimated_position.z)/(math.sqrt((constellation3[rec0.idA].x-estimated_position.x)**2+(constellation3[rec0.idA].y-estimated_position.y)**2+(constellation3[rec0.idA].z-estimated_position.z)**2)), 
-                (constellation3[rec1.idB].z-estimated_position.z)/(math.sqrt((constellation3[rec1.idB].x-estimated_position.x)**2+(constellation3[rec1.idB].y-estimated_position.y)**2+(constellation3[rec1.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec1.idA].z-estimated_position.z)/(math.sqrt((constellation3[rec1.idA].x-estimated_position.x)**2+(constellation3[rec1.idA].y-estimated_position.y)**2+(constellation3[rec1.idA].z-estimated_position.z)**2)),
-                (constellation3[rec2.idB].z-estimated_position.z)/(math.sqrt((constellation3[rec2.idB].x-estimated_position.x)**2+(constellation3[rec2.idB].y-estimated_position.y)**2+(constellation3[rec2.idB].z-estimated_position.z)**2)),
-                -(constellation3[rec2.idA].z-estimated_position.z)/(math.sqrt((constellation3[rec2.idA].x-estimated_position.x)**2+(constellation3[rec2.idA].y-estimated_position.y)**2+(constellation3[rec2.idA].z-estimated_position.z)**2)))
+        derror_dy = 2*(((constellation[rec2.idB].y-estimated_position.y)/(math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2))+(estimated_position.y-constellation[rec2.idA].y)/(math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2)-rec2.dt+math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2))+\
+                       ((constellation[rec1.idB].y-estimated_position.y)/(math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2))+(estimated_position.y-constellation[rec1.idA].y)/(math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2)-rec1.dt+math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2))+\
+                       ((constellation[rec0.idB].y-estimated_position.y)/(math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2))+(estimated_position.y-constellation[rec0.idA].y)/(math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2)-rec0.dt+math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)))
 
-        derror_dz = sum(de_dz)
+        # derror_dy = sum(de_dy)
 
-        #print(error, estimated_position.x, estimated_position.y, estimated_position.z)
+        # de_dz = ((constellation[rec0.idB].z-estimated_position.z)/(math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec0.idA].z-estimated_position.z)/(math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)), 
+        #         (constellation[rec1.idB].z-estimated_position.z)/(math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec1.idA].z-estimated_position.z)/(math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2)),
+        #         (constellation[rec2.idB].z-estimated_position.z)/(math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2)),
+        #         -(constellation[rec2.idA].z-estimated_position.z)/(math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2)))
+
+        derror_dz = 2*(((constellation[rec2.idB].z-estimated_position.z)/(math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2))+(estimated_position.z-constellation[rec2.idA].z)/(math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec2.idB].x-estimated_position.x)**2+(constellation[rec2.idB].y-estimated_position.y)**2+(constellation[rec2.idB].z-estimated_position.z)**2)-rec2.dt+math.sqrt((constellation[rec2.idA].x-estimated_position.x)**2+(constellation[rec2.idA].y-estimated_position.y)**2+(constellation[rec2.idA].z-estimated_position.z)**2))+\
+                       ((constellation[rec1.idB].z-estimated_position.z)/(math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2))+(estimated_position.z-constellation[rec1.idA].z)/(math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec1.idB].x-estimated_position.x)**2+(constellation[rec1.idB].y-estimated_position.y)**2+(constellation[rec1.idB].z-estimated_position.z)**2)-rec1.dt+math.sqrt((constellation[rec1.idA].x-estimated_position.x)**2+(constellation[rec1.idA].y-estimated_position.y)**2+(constellation[rec1.idA].z-estimated_position.z)**2))+\
+                       ((constellation[rec0.idB].z-estimated_position.z)/(math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2))+(estimated_position.z-constellation[rec0.idA].z)/(math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)))*(-math.sqrt((constellation[rec0.idB].x-estimated_position.x)**2+(constellation[rec0.idB].y-estimated_position.y)**2+(constellation[rec0.idB].z-estimated_position.z)**2)-rec0.dt+math.sqrt((constellation[rec0.idA].x-estimated_position.x)**2+(constellation[rec0.idA].y-estimated_position.y)**2+(constellation[rec0.idA].z-estimated_position.z)**2)))
+
+        # derror_dz = sum(de_dz)
+
+        # print(error, estimated_position.x, estimated_position.y, estimated_position.z)
 
         estimated_position.x = estimated_position.x - learning_rate*derror_dx
         estimated_position.y = estimated_position.y - learning_rate*derror_dy
         estimated_position.z = estimated_position.z - learning_rate*derror_dz
+
     
     return estimated_position, previous_error
