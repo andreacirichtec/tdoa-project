@@ -6,7 +6,7 @@ from constellations import *
 
 # change these addresses and file names
 # src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm.xlsx"
-tdoa_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-corrected-random.xlsx"
+tdoa_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-corrected-random10.xlsx"
 pos_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-extracted.xlsx"
 
 read_data = pd.read_excel(tdoa_src_address)
@@ -61,7 +61,7 @@ plt.xlabel('timestamp')
 plt.ylabel('error function[m]')
 plt.title('nelder mead error')
 #plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2--tdoa-error-function.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random-error-function.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-error-function.png')
 
 
 fig.align_labels()
@@ -82,7 +82,7 @@ plt.ylabel('x coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
 # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-x-error.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random-x-error.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-x-error.png')
 
 
 figx.align_labels()
@@ -103,7 +103,7 @@ plt.ylabel('y coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
 # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-y-error.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random-y-error.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-y-error.png')
 
 figy.align_labels()
 
@@ -123,7 +123,7 @@ plt.ylabel('z coordinate[m]')
 plt.title('nelder mead error')
 plt.legend()
 # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-z-error.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random-z-error.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-z-error.png')
 
 figz.align_labels()
 
@@ -139,7 +139,7 @@ ax.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 # ax.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 plt.legend()
 # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-3d-gd.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random-3d-gd.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-3d-gd.png')
 
 fig3d_nm = plt.figure('nelder mead tracing', tight_layout=True)
 plt.title('nelder mead')
@@ -153,7 +153,7 @@ bx.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 # bx.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
 plt.legend()
 # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-3d-nm.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random-3d-nm.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-3d-nm.png')
 
 
 plt.show()

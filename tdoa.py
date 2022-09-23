@@ -70,22 +70,27 @@ while (i < num_tdoa): #možda treba korak da bude 3, ali sa korakom 1 ima više 
           randy = min_y + (random() * (max_y - min_y))
           randz = min_z + (random() * (max_z - min_z))
           estimated_position_nm = [randx, randy, randz]
+          # print("random point = ", estimated_position_nm)
 
           #nm_position, nm_error = nelder_mead_f(estimated_position_nm)
           nm_result = minimize(error_f_nm, estimated_position_nm, method='Nelder-Mead', tol=1e-6)
+          # print("greska = ",nm_result.fun)
+          # print("estimirana tacka = (", nm_result.x[0], ",", nm_result.x[1], ",", nm_result.x[2], ")")
 
           if (nm_result.fun < nm_result_error):
-               nm_result_final = nm_result
+               nm_result_final = nm_result.x
+               nm_result_error = nm_result.fun
+               # print("menjam tacku")
           
      time4 = time.time()
      nm_time = time4-time3
 
 
      nm_time_arr.append(nm_time)
-     nm_errors.append(nm_result_final.fun)
-     nm_x_arr.append(nm_result_final.x[0])
-     nm_y_arr.append(nm_result_final.x[1])
-     nm_z_arr.append(nm_result_final.x[2])
+     nm_errors.append(nm_result_error)
+     nm_x_arr.append(nm_result_final[0])
+     nm_y_arr.append(nm_result_final[1])
+     nm_z_arr.append(nm_result_final[2])
 
      
      idA0_arr.append(rec0_tdoa.idA)
