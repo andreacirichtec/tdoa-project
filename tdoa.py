@@ -15,9 +15,9 @@ from nelder_mead import nelder_mead_f
 # dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm.xlsx"
 # describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm-describe.xlsx"
 
-src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-extracted.xlsx"
-dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-corrected-random10.xlsx"
-describe_dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-corrected-random10-describe.xlsx"
+src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const2/const2-trial1-tdoa2-extracted.xlsx"
+dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const2/const2-trial1-tdoa2-results-corrected-random10.xlsx"
+describe_dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const2/const2-trial1-tdoa2-results-corrected-random10-describe.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
