@@ -6,8 +6,8 @@ from constellations import *
 
 # change these addresses and file names
 # src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm.xlsx"
-tdoa_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-corrected-random10.xlsx"
-pos_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-extracted.xlsx"
+tdoa_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-corrected-random10.xlsx"
+pos_src_address  = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-extracted.xlsx"
 
 read_data = pd.read_excel(tdoa_src_address)
 read_pos = pd.read_excel(pos_src_address)
@@ -49,111 +49,113 @@ for j in range(0,num_pos):
 # nm_y_err = np.subtract(nm_y_arr, y_arr)
 # nm_z_err = np.subtract(nm_z_arr, z_arr)
 
-fig = plt.figure('error function', tight_layout=True, figsize=(16,6))
-plt.subplot(211)
+SMALL_SIZE = 8
+MEDIUM_SIZE = 10
+BIGGER_SIZE = 12
+
+plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+plt.rc('axes', titlesize=BIGGER_SIZE)     # fontsize of the axes title
+plt.rc('axes', labelsize=BIGGER_SIZE)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+plt.rc('legend', fontsize=MEDIUM_SIZE)    # legend fontsize
+plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+
+fig = plt.figure('Gradient Descent', tight_layout=True, figsize=(14,14))
+plt.subplot(411)
 plt.plot(t_tdoa_arr, gd_error_arr)
+plt.xlabel('timestamp[s]')
 plt.ylabel('error function[m]')
-plt.title('gradient descent error')
+plt.title('Gradient Descent optimization error')
 
-plt.subplot(212)
-plt.plot(t_tdoa_arr, nm_error_arr)
-plt.xlabel('timestamp')
-plt.ylabel('error function[m]')
-plt.title('nelder mead error')
-#plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial1-tdoa2--tdoa-error-function.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-error-function.png')
+plt.subplot(412)
+plt.plot(t_tdoa_arr, gd_x_arr, color = 'blue', label = 'estimated position')
+plt.plot(t_pos_arr, x_arr, color = 'red', label = 'ground truth position')
+plt.xlabel('timestamp[s]')
+plt.ylabel('x coordinate[m]')
+plt.title('x coordinate error')
+plt.legend()
 
+plt.subplot(413)
+plt.plot(t_tdoa_arr, gd_y_arr, color = 'blue', label = 'estimated position')
+plt.plot(t_pos_arr, y_arr, color = 'red', label = 'ground truth position')
+plt.xlabel('timestamp[s]')
+plt.ylabel('y coordinate[m]')
+plt.title('y coordinate error')
+plt.legend()
+
+plt.subplot(414)
+plt.plot(t_tdoa_arr, gd_z_arr, color = 'blue', label = 'estimated position')
+plt.plot(t_pos_arr, z_arr, color = 'red', label = 'ground truth position')
+plt.xlabel('timestamp[s]')
+plt.ylabel('z coordinate[m]')
+plt.title('z coordinate error')
+plt.legend()
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-gd.png')
 
 fig.align_labels()
 
-figx = plt.figure('x error', tight_layout=True, figsize=(16,6))
-plt.subplot(211)
-plt.plot(t_tdoa_arr, gd_x_arr, color = 'blue', label = 'estimated position')
-plt.plot(t_pos_arr, x_arr, color = 'red', label = 'ground truth position')
-plt.ylabel('x coordinate[m]')
-plt.title('gradient descent error')
-plt.legend()
+fig = plt.figure('Nelder-Mead', tight_layout=True, figsize=(14,14))
+plt.subplot(411)
+plt.plot(t_tdoa_arr, nm_error_arr)
+plt.xlabel('timestamp[s]')
+plt.ylabel('error function[m]')
+plt.title('Nelder-Mead optimization error')
 
-plt.subplot(212)
+plt.subplot(412)
 plt.plot(t_tdoa_arr, nm_x_arr, color = 'blue', label = 'estimated position')
 plt.plot(t_pos_arr, x_arr, color = 'red', label = 'ground truth position')
-plt.xlabel('timestamp')
+plt.xlabel('timestamp[s]')
 plt.ylabel('x coordinate[m]')
-plt.title('nelder mead error')
-plt.legend()
-# plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-x-error.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-x-error.png')
-
-
-figx.align_labels()
-
-figy = plt.figure('y error', tight_layout=True, figsize=(16,6))
-plt.subplot(211)
-plt.plot(t_tdoa_arr, gd_y_arr, color = 'blue', label = 'estimated position')
-plt.plot(t_pos_arr, y_arr, color = 'red', label = 'ground truth position')
-plt.ylabel('y coordinate[m]')
-plt.title('gradient descent error')
+plt.title('x coordinate error')
 plt.legend()
 
-plt.subplot(212)
+plt.subplot(413)
 plt.plot(t_tdoa_arr, nm_y_arr, color = 'blue', label = 'estimated position')
 plt.plot(t_pos_arr, y_arr, color = 'red', label = 'ground truth position')
-plt.xlabel('timestamp')
+plt.xlabel('timestamp[s]')
 plt.ylabel('y coordinate[m]')
-plt.title('nelder mead error')
-plt.legend()
-# plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-y-error.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-y-error.png')
-
-figy.align_labels()
-
-figz = plt.figure('z error', tight_layout=True, figsize=(16,6))
-plt.subplot(211)
-plt.plot(t_tdoa_arr, gd_z_arr, color = 'blue', label = 'estimated position')
-plt.plot(t_pos_arr, z_arr, color = 'red', label = 'ground truth position')
-plt.ylabel('z coordinate[m]')
-plt.title('gradient descent error')
+plt.title('y coordinate error')
 plt.legend()
 
-plt.subplot(212)
+plt.subplot(414)
 plt.plot(t_tdoa_arr, nm_z_arr, color = 'blue', label = 'estimated position')
 plt.plot(t_pos_arr, z_arr, color = 'red', label = 'ground truth position')
-plt.xlabel('timestamp')
+plt.xlabel('timestamp[s]')
 plt.ylabel('z coordinate[m]')
-plt.title('nelder mead error')
+plt.title('z coordinate error')
 plt.legend()
-# plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-z-error.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-z-error.png')
+plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-nm-10.png')
 
-figz.align_labels()
+fig.align_labels()
 
-fig3d_gd = plt.figure('gradient descent tracing', tight_layout=True)
-plt.title('gradient descent')
-plt.box(False)
-plt.xticks([])
-plt.yticks([])
-ax = plt.axes(projection='3d')
-ax.plot3D(gd_x_arr, gd_y_arr, gd_z_arr, 'blue', label = 'estimated position')
-ax.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
-# ax.scatter3D(gd_x_arr, gd_y_arr, gd_z_arr, 'blue', label = 'estimated position')
-# ax.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
-plt.legend()
-# plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-3d-gd.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-3d-gd.png')
+# fig3d_gd = plt.figure('gradient descent tracing', tight_layout=True)
+# plt.title('gradient descent')
+# plt.box(False)
+# plt.xticks([])
+# plt.yticks([])
+# ax = plt.axes(projection='3d')
+# ax.plot3D(gd_x_arr, gd_y_arr, gd_z_arr, 'blue', label = 'estimated position')
+# ax.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
+# # ax.scatter3D(gd_x_arr, gd_y_arr, gd_z_arr, 'blue', label = 'estimated position')
+# # ax.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
+# plt.legend()
+# # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-3d-gd.png')
+# plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial4-tdoa2-ajmo-random10-3d-gd.png')
 
-fig3d_nm = plt.figure('nelder mead tracing', tight_layout=True)
-plt.title('nelder mead')
-plt.box(False)
-plt.xticks([])
-plt.yticks([])
-bx = plt.axes(projection='3d')
-bx.plot3D(nm_x_arr, nm_y_arr, nm_z_arr, 'blue', label = 'estimated position')
-bx.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
-# bx.scatter3D(nm_x_arr, nm_y_arr, nm_z_arr, 'blue', label = 'estimated position')
-# bx.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
-plt.legend()
-# plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-3d-nm.png')
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-ajmo-random10-3d-nm.png')
+# fig3d_nm = plt.figure('nelder mead tracing', tight_layout=True)
+# plt.title('nelder mead')
+# plt.box(False)
+# plt.xticks([])
+# plt.yticks([])
+# bx = plt.axes(projection='3d')
+# bx.plot3D(nm_x_arr, nm_y_arr, nm_z_arr, 'blue', label = 'estimated position')
+# bx.plot3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
+# # bx.scatter3D(nm_x_arr, nm_y_arr, nm_z_arr, 'blue', label = 'estimated position')
+# # bx.scatter3D(x_arr, y_arr, z_arr, 'red', label = 'ground truth position')
+# plt.legend()
+# # plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\slike\\const1-trial2-tdoa2-scipynm3-3d-nm.png')
+# plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial4-tdoa2-ajmo-random10-3d-nm.png')
 
 
 plt.show()
