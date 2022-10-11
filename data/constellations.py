@@ -92,7 +92,7 @@ constellation4 = [Point(-3.0101983925222484,-4.058910586060332,0.196289711815028
                     Point(3.4654089074024688,3.55896956542648,2.9710608167433157),
                     Point(-3.2112336178645373,3.304121110232922,0.17617659290117677)]
 
-constellation = constellation2
+constellation = constellation1
 
 def error_f_gd(estimated_position):
 
