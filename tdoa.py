@@ -15,9 +15,9 @@ from nelder_mead import nelder_mead_f
 # dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm.xlsx"
 # describe_dst_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm-describe.xlsx"
 
-src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const2/const2-trial1-tdoa2-extracted.xlsx"
-dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const2/const2-trial1-tdoa2-results-corrected-random10.xlsx"
-describe_dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const2/const2-trial1-tdoa2-results-corrected-random10-describe.xlsx"
+src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-extracted.xlsx"
+dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-corrected-random.xlsx"
+describe_dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-corrected-random-describe.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
@@ -60,27 +60,31 @@ while (i < num_tdoa): #možda treba korak da bude 3, ali sa korakom 1 ima više 
      gd_y_arr.append(gd_position.y)
      gd_z_arr.append(gd_position.z)
 
-     # if (i==0):
-     #      estimated_position_nm = [randx, randy, randz]
      nm_result_final = []
      nm_result_error = inf
      time3 = time.time()
-     for j in range(10):
-          randx = min_x + (random() * (max_x - min_x))
-          randy = min_y + (random() * (max_y - min_y))
-          randz = min_z + (random() * (max_z - min_z))
-          estimated_position_nm = [randx, randy, randz]
-          # print("random point = ", estimated_position_nm)
+     # for j in range(10):
+     #      randx = min_x + (random() * (max_x - min_x))
+     #      randy = min_y + (random() * (max_y - min_y))
+     #      randz = min_z + (random() * (max_z - min_z))
+     #      estimated_position_nm = [randx, randy, randz]
+     #      # print("random point = ", estimated_position_nm)
 
-          #nm_position, nm_error = nelder_mead_f(estimated_position_nm)
-          nm_result = minimize(error_f_nm, estimated_position_nm, method='Nelder-Mead', tol=1e-6)
-          # print("greska = ",nm_result.fun)
-          # print("estimirana tacka = (", nm_result.x[0], ",", nm_result.x[1], ",", nm_result.x[2], ")")
+     #      #nm_position, nm_error = nelder_mead_f(estimated_position_nm)
+     #      nm_result = minimize(error_f_nm, estimated_position_nm, method='Nelder-Mead', tol=1e-6)
+     #      # print("greska = ",nm_result.fun)
+     #      # print("estimirana tacka = (", nm_result.x[0], ",", nm_result.x[1], ",", nm_result.x[2], ")")
 
-          if (nm_result.fun < nm_result_error):
-               nm_result_final = nm_result.x
-               nm_result_error = nm_result.fun
-               # print("menjam tacku")
+     #      if (nm_result.fun < nm_result_error):
+     #           nm_result_final = nm_result.x
+     #           nm_result_error = nm_result.fun
+     #           # print("menjam tacku")
+
+     estimated_position_nm = [randx, randy, randz]
+
+     nm_result = minimize(error_f_nm, estimated_position_nm, method='Nelder-Mead', tol=1e-6)
+     nm_result_final = nm_result.x
+     nm_result_error = nm_result.fun
           
      time4 = time.time()
      nm_time = time4-time3

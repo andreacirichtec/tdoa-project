@@ -75,9 +75,9 @@ def nelder_mead_step(simp, reflection = 1, expansion = 2, contraction = 0.5, shr
 
     # 2. CALCULATE CENTROID
     centroid = Point(0,0,0)
-    centroid.x = (simp.b.x + simp.gb.x + simp.gw.x + simp.w.x)/4
-    centroid.y = (simp.b.y + simp.gb.y + simp.gw.y + simp.w.y)/4
-    centroid.z = (simp.b.z + simp.gb.z + simp.gw.z + simp.w.z)/4
+    centroid.x = (simp.b.x + simp.gb.x + simp.gw.x)/3
+    centroid.y = (simp.b.y + simp.gb.y + simp.gw.y)/3
+    centroid.z = (simp.b.z + simp.gb.z + simp.gw.z)/3
     # #centroid = Point(x,y,z)
     # print("centroid = ", centroid)
 
