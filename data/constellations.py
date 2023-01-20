@@ -267,3 +267,26 @@ def error_f_nm(a):
     error = (sum(e0))**2 + (sum(e1))**2 + (sum(e2))**2
 
     return error
+
+def error_f_pso(a):
+
+    global constellation
+    global rec0
+    global rec1
+    global rec2
+    
+    e0 = (math.sqrt((constellation[rec0_tdoa.idA].x-a[0])**2+(constellation[rec0_tdoa.idA].y-a[1])**2+(constellation[rec0_tdoa.idA].z-a[2])**2), 
+        -math.sqrt((constellation[rec0_tdoa.idB].x-a[0])**2+(constellation[rec0_tdoa.idB].y-a[1])**2+(constellation[rec0_tdoa.idB].z-a[2])**2),
+        rec0_tdoa.tdoa) 
+
+    e1 = (math.sqrt((constellation[rec1_tdoa.idA].x-a[0])**2+(constellation[rec1_tdoa.idA].y-a[1])**2+(constellation[rec1_tdoa.idA].z-a[2])**2),
+        -math.sqrt((constellation[rec1_tdoa.idB].x-a[0])**2+(constellation[rec1_tdoa.idB].y-a[1])**2+(constellation[rec1_tdoa.idB].z-a[2])**2), 
+        rec1_tdoa.tdoa)
+
+    e2 = (math.sqrt((constellation[rec2_tdoa.idA].x-a[0])**2+(constellation[rec2_tdoa.idA].y-a[1])**2+(constellation[rec2_tdoa.idA].z-a[2])**2),   
+        -math.sqrt((constellation[rec2_tdoa.idB].x-a[0])**2+(constellation[rec2_tdoa.idB].y-a[1])**2+(constellation[rec2_tdoa.idB].z-a[2])**2),
+        rec2_tdoa.tdoa)
+
+    error = (sum(e0))**2 + (sum(e1))**2 + (sum(e2))**2
+
+    return error
