@@ -5,9 +5,10 @@ import numpy as np
 from constellations import *
 
 # change these addresses and file names
-# src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial2-tdoa2-results-scipynm.xlsx"
-tdoa_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-corrected-random10.xlsx"
-pos_src_address  = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-extracted.xlsx"
+# tdoa_src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-results-improved.xlsx"
+# pos_src_address  = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-extracted.xlsx"
+tdoa_src_address = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-results-improved.xlsx"
+pos_src_address  = "C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-extracted.xlsx"
 
 read_data = pd.read_excel(tdoa_src_address)
 read_pos = pd.read_excel(pos_src_address)
@@ -91,7 +92,7 @@ plt.xlabel('timestamp $[s]$')
 plt.ylabel('z coordinate $[m]$')
 plt.title('z coordinate error')
 plt.legend()
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-gd.png')
+#plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-gd.png')
 
 fig.align_labels()
 
@@ -125,7 +126,8 @@ plt.xlabel('timestamp $[s]$')
 plt.ylabel('z coordinate $[m]$')
 plt.title('z coordinate error')
 plt.legend()
-plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-nm-10.png')
+# plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial6-tdoa2-nm-improved.png')
+plt.savefig('C:\\Users\\Andrea\\Documents\\GitHub\\tdoa-project\\data\\extracted_data\\const1\\const1-trial6-tdoa2-nm-improved.png')
 
 fig.align_labels()
 
@@ -158,4 +160,4 @@ fig.align_labels()
 # plt.savefig('/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial4-tdoa2-ajmo-random10-3d-nm.png')
 
 
-# plt.show()
+plt.show()
