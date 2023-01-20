@@ -19,30 +19,40 @@ from gradient_descent import gradient_descent_f
 
 # macOS
 src_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-extracted.xlsx"
-dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-pso30200.xlsx"
-describe_dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-pso30200-describe.xlsx"
+dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-pso20200.xlsx"
+describe_dst_address = "/Users/andreaciric/Documents/GitHub/tdoa-project/data/extracted_data/const1/const1-trial1-tdoa2-results-pso20200-describe.xlsx"
 
 # read data from the csv file
 read_data = pd.read_excel(src_address)
 
 idA0_arr = []; idB0_arr = []; idA1_arr = []; idB1_arr = []; idA2_arr = []; idB2_arr = []
-# idA3_arr = []; idB3_arr = []; idA4_arr = []; idB4_arr = []; idA5_arr = []; idB5_arr = []; idA6_arr = []; idB6_arr = []; idA7_arr = []; idB7_arr = []
 gd_errors = []; gd_x_arr = []; gd_y_arr = []; gd_z_arr = []; gd_time_arr = []
 pso_errors = []; pso_x_arr = []; pso_y_arr = []; pso_z_arr = []; pso_time_arr = []
 position_x_arr = []; position_y_arr = []; position_z_arr = []; tdoa_timestamp_arr = []; pos_timestamp_arr = []
+num_iterations_arr = []
 
 num_tdoa = len(read_data)-2
-# num_pos = len(read_data[read_data["t_pose"].notna()])-1
+bounds = [(-5,5),(-5,5),(0,4)]
 
 i = 0
 j = 0
 
-bounds = [(-5,5),(-5,5),(0,4)]
+timestamp1 = 0
+timestamp2 = 0
+speed_limit = 98 #The Batmobile speed
 
-while (i < 5000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
+pso_result_final = []
+pso_result_temp = []
+last_five_x = []; last_five_y = []; last_five_z = []
+
+while (i < 1000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(read_data)-2
      
      print(i, "of", num_tdoa)
      get_recordings_tdoa(read_data, i)
+
+     timestamp2 = rec2_tdoa.timestamp
+     distance_limit = (timestamp2 - timestamp1)*speed_limit
+     timestamp1 = rec0_tdoa.timestamp
 
      min_x = -5; max_x = 5
      min_y = -5; max_y = 5
@@ -64,22 +74,56 @@ while (i < 5000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(
      gd_y_arr.append(gd_position.y)
      gd_z_arr.append(gd_position.z)
 
+     pso_result_error = inf
      time3 = time.time()
+     num_iterations = 0
 
-     estimated_position = [randx, randy, randz]
+     while True:
+          randx = min_x + (random.random() * (max_x - min_x))
+          randy = min_y + (random.random() * (max_y - min_y))
+          randz = min_z + (random.random() * (max_z - min_z))
+          estimated_position_pso = [randx, randy, randz]
 
-     x, min_result = PSO(error_f_pso,estimated_position,bounds,num_particles=30,maxiter=200)
+          pso_result, pso_result_error = PSO(error_f_pso,estimated_position_pso,bounds,num_particles=20,maxiter=200)
+          num_iterations+=1
+
+          if (i < 5) and (pso_result_error < distance_limit):
+               pso_result_final = pso_result
+               break
+
+          if (pso_result_error < distance_limit) and (abs(pso_result[0]-last_five_x_avg) < distance_limit) and (abs(pso_result[1]-last_five_y_avg) < distance_limit) and (abs(pso_result[2]-last_five_z_avg) < distance_limit):
+               pso_result_final = pso_result
+               break
+          
+          # random granica, izmeniti
+          if (num_iterations > 500):
+               break
+
+     if (i < 4):
+          last_five_x.append(pso_result_final[0])
+          last_five_y.append(pso_result_final[1])
+          last_five_z.append(pso_result_final[2])
+     else:
+          last_five_x.append(pso_result_final[0])
+          last_five_y.append(pso_result_final[1])
+          last_five_z.append(pso_result_final[2])
+          last_five_x_avg = sum(last_five_x)/len(last_five_x)
+          last_five_y_avg = sum(last_five_y)/len(last_five_y)
+          last_five_z_avg = sum(last_five_z)/len(last_five_z)
+          last_five_x.pop(0)
+          last_five_y.pop(0)
+          last_five_z.pop(0)
           
      time4 = time.time()
      pso_time = time4-time3
 
+     num_iterations_arr.append(num_iterations)
      pso_time_arr.append(pso_time)
-     pso_errors.append(min_result)
-     pso_x_arr.append(x[0])
-     pso_y_arr.append(x[1])
-     pso_z_arr.append(x[2])
+     pso_errors.append(pso_result_error)
+     pso_x_arr.append(pso_result_final[0])
+     pso_y_arr.append(pso_result_final[1])
+     pso_z_arr.append(pso_result_final[2])
 
-     
      idA0_arr.append(rec0_tdoa.idA)
      idB0_arr.append(rec0_tdoa.idB)
      idA1_arr.append(rec1_tdoa.idA)
@@ -87,27 +131,10 @@ while (i < 5000): #možda treba korak da bude 3, ali sa korakom 1 ima više len(
      idA2_arr.append(rec2_tdoa.idA)
      idB2_arr.append(rec2_tdoa.idB)
      tdoa_timestamp_arr.append((rec0_tdoa.timestamp + rec1_tdoa.timestamp + rec2_tdoa.timestamp)/3)
-     # idA3_arr.append(rec3_tdoa.idA)
-     # idB3_arr.append(rec3_tdoa.idB)
-     # idA4_arr.append(rec4_tdoa.idA)
-     # idB4_arr.append(rec4_tdoa.idB)
-     # idA5_arr.append(rec5_tdoa.idA)
-     # idB5_arr.append(rec5_tdoa.idB)
-     # idA6_arr.append(rec6_tdoa.idA)
-     # idB6_arr.append(rec6_tdoa.idB)
-     # idA7_arr.append(rec7_tdoa.idA)
-     # idB7_arr.append(rec7_tdoa.idB)
-     # position_x_arr.append((rec0.x + rec1.x + rec2.x + rec3.x + rec4.x + rec5.x + rec6.x + rec7.x)/8)
-     # position_y_arr.append((rec0.y + rec1.y + rec2.y + rec3.y + rec4.y + rec5.y + rec6.y + rec7.y)/8)
-     # position_z_arr.append((rec0.z + rec1.z + rec2.z + rec3.z + rec4.z + rec5.z + rec6.z + rec7.z)/8)
-     # timestamp_arr.append((rec0_tdoa.tdoa_timestamp + rec1_tdoa.tdoa_timestamp + rec2_tdoa.tdoa_timestamp + rec3_tdoa.tdoa_timestamp + rec4_tdoa.tdoa_timestamp + rec5_tdoa.tdoa_timestamp + rec6_tdoa.tdoa_timestamp + rec7_tdoa.tdoa_timestamp)/8)
-     
-     # print()
+
      i += 1
 
-
-# data = {'GD errors':gd_errors, 'GD x estimated':gd_x_arr, 'GD y estimated':gd_y_arr, 'GD z estimated':gd_z_arr, 'GD execution time':gd_time_arr, 'pso errors':pso_errors, 'pso x estimated':pso_x_arr, 'pso y estimated':pso_y_arr, 'pso z estimated':pso_z_arr, 'pso execution time':pso_time_arr, 'idA0':idA0_arr, 'idB0':idB0_arr, 'idA1':idA1_arr, 'idB1':idB1_arr, 'idA2':idA2_arr, 'idB2':idB2_arr, 'idA3':idA3_arr, 'idB3':idB3_arr, 'idA4':idA4_arr, 'idB4':idB4_arr, 'idA5':idA5_arr, 'idB5':idB5_arr, 'idA6':idA6_arr, 'idB6':idB6_arr, 'idA7':idA7_arr, 'idB7':idB7_arr, 'tdoa timestamp':tdoa_timestamp_arr, 'x position':position_x_arr, 'y position':position_y_arr, 'z position':position_z_arr, 'pos timestamp':pos_timestamp_arr}
-data = {'GD errors':gd_errors, 'GD x estimated':gd_x_arr, 'GD y estimated':gd_y_arr, 'GD z estimated':gd_z_arr, 'GD execution time':gd_time_arr, 'PSO errors':pso_errors, 'PSO x estimated':pso_x_arr, 'PSO y estimated':pso_y_arr, 'PSO z estimated':pso_z_arr, 'PSO execution time':pso_time_arr, 'idA0':idA0_arr, 'idB0':idB0_arr, 'idA1':idA1_arr, 'idB1':idB1_arr, 'idA2':idA2_arr, 'idB2':idB2_arr, 'tdoa timestamp':tdoa_timestamp_arr}
+data = {'GD errors':gd_errors, 'GD x estimated':gd_x_arr, 'GD y estimated':gd_y_arr, 'GD z estimated':gd_z_arr, 'GD execution time':gd_time_arr, 'PSO errors':pso_errors, 'PSO x estimated':pso_x_arr, 'PSO y estimated':pso_y_arr, 'PSO z estimated':pso_z_arr, 'PSO execution time':pso_time_arr, 'idA0':idA0_arr, 'idB0':idB0_arr, 'idA1':idA1_arr, 'idB1':idB1_arr, 'idA2':idA2_arr, 'idB2':idB2_arr, 'tdoa timestamp':tdoa_timestamp_arr, 'iterations number':num_iterations}
 df = pd.DataFrame(data)
 
 df.to_excel(dst_address, sheet_name="Data")
